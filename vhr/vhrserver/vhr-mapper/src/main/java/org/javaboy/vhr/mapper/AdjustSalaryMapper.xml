@@ -114,4 +114,34 @@
       remark = #{remark,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <delete id="deleteAdjustsalary">
+    DELETE FROM adjustsalary WHERE id IN
+    <foreach collection="ids" separator="," item="id" open="(" close=")">
+      #{id}
+    </foreach>
+  </delete>
+
+  <resultMap id="BaseResultMapExt" type="org.javaboy.vhr.model.AdjustSalaryVo" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="eid" property="eid" jdbcType="INTEGER" />
+    <result column="asDate" property="asdate" jdbcType="DATE" />
+    <result column="beforeSalary" property="beforesalary" jdbcType="INTEGER" />
+    <result column="afterSalary" property="aftersalary" jdbcType="INTEGER" />
+    <result column="reason" property="reason" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+  </resultMap>
+  <select id="selectByKey" resultMap="BaseResultMapExt">
+    select a.*,e.name from adjustsalary a left join employee e on a.eid = e.id
+    where e.name like concat('%',#{keywords},'%')
+    <if test="start!=null and size!=null">
+      order by a.id limit #{start},#{size}
+    </if>
+  </select>
+  <select id="getCountByKeywords" resultType="Long">
+    select  count(*) from adjustsalary a left join employee e on a.eid = e.id
+    where e.name like concat('%',#{keywords},'%')
+
+  </select>
 </mapper>

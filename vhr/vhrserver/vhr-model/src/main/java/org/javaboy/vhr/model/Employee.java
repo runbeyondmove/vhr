@@ -113,6 +113,14 @@ public class Employee implements Serializable {
     private Position position;
     private Salary salary;
 
+
+    public Employee(){
+
+    }
+    public Employee(String name){
+        this.name = name;
+    }
+
     public Salary getSalary() {
         return salary;
     }
@@ -382,5 +390,16 @@ public class Employee implements Serializable {
 
     public void setWorkAge(Integer workAge) {
         this.workAge = workAge;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Employee emp = (Employee) o;
+
+        return name != null ? name.equals(emp.name) : emp.name == null;
     }
 }

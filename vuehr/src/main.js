@@ -106,7 +106,8 @@ import {putRequest} from "./utils/api";
 import {deleteRequest} from "./utils/api";
 import {getRequest} from "./utils/api";
 import {initMenu} from "./utils/menus";
-import 'font-awesome/css/font-awesome.min.css'
+import 'font-awesome/css/font-awesome.min.css';
+import moment from 'moment' // 导入文件
 
 Vue.prototype.postRequest = postRequest;
 Vue.prototype.postKeyValueRequest = postKeyValueRequest;
@@ -115,6 +116,11 @@ Vue.prototype.deleteRequest = deleteRequest;
 Vue.prototype.getRequest = getRequest;
 
 Vue.config.productionTip = false
+
+// 定义时间格式化全局过滤器
+Vue.filter('dateformat', function(dataStr, pattern = 'YYYY-MM-DD HH:mm:ss') {
+    return moment(dataStr).format(pattern)
+})
 
 router.beforeEach((to, from, next) => {
     if (to.path == '/') {

@@ -90,4 +90,30 @@
       remark = #{remark,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <resultMap id="BaseResultMapExt" type="org.javaboy.vhr.model.EmployeetrainVo" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="eid" property="eid" jdbcType="INTEGER" />
+    <result column="trainDate" property="traindate" jdbcType="DATE" />
+    <result column="trainContent" property="traincontent" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+  </resultMap>
+  <delete id="deleteTrain">
+    DELETE FROM employeetrain WHERE id IN
+    <foreach collection="ids" separator="," item="id" open="(" close=")">
+      #{id}
+    </foreach>
+  </delete>
+  <select id="selectByKey" resultMap="BaseResultMapExt">
+    select et.*,e.name from employeetrain et left join employee e on et.eid = e.id
+    where e.name like concat('%',#{keywords},'%')
+    <if test="start!=null and size!=null">
+      order by et.id limit #{start},#{size}
+    </if>
+  </select>
+  <select id="getCountByKeywords" resultType="Long">
+    select  count(*) from employeetrain et left join employee e on et.eid = e.id
+    where e.name like concat('%',#{keywords},'%')
+  </select>
 </mapper>

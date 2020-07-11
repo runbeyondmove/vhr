@@ -39,7 +39,8 @@ export const formatRoutes = (routes) => {
                 } else if (component.startsWith("Emp")) {
                     require(['../views/emp/' + component + '.vue'], resolve);
                 } else if (component.startsWith("Per")) {
-                    require(['../views/per/' + component + '.vue'], resolve);
+                    // require(['../views/per/' + component + '.vue'], resolve);
+                    require(['../components/personnel/' + component + '.vue'], resolve);
                 } else if (component.startsWith("Sal")) {
                     require(['../views/sal/' + component + '.vue'], resolve);
                 } else if (component.startsWith("Sta")) {

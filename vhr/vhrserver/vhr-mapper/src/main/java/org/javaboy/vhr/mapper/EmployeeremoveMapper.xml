@@ -114,4 +114,54 @@
       remark = #{remark,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <resultMap id="getAllResultMap" type="org.javaboy.vhr.model.EmployeeremoveVo">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="eid" jdbcType="INTEGER" property="eid" />
+    <result column="afterDepId" jdbcType="INTEGER" property="afterDepId" />
+    <result column="afterJobId" jdbcType="INTEGER" property="afterJobId" />
+    <result column="removeDate" jdbcType="DATE" property="removeDate" />
+    <result column="reason" jdbcType="VARCHAR" property="reason" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <association property="department" javaType="org.javaboy.vhr.model.Department">
+      <id property="id" column="did"/>
+      <result property="name" column="dname"/>
+    </association>
+    <association property="position" javaType="org.javaboy.vhr.model.Position">
+      <id property="id" column="pid"/>
+      <result property="name" column="pname"/>
+    </association>
+  </resultMap>
+  <delete id="deleteMove">
+    DELETE FROM employeeremove WHERE id IN
+    <foreach collection="ids" separator="," item="id" open="(" close=")">
+      #{id}
+    </foreach>
+  </delete>
+  <select id="getAllMove" resultMap="getAllResultMap">
+    select et.* from (select e.*,
+    d.`id` as did,d.`name` as dname ,
+    p.`id` as pid,p.`name` as pname
+    from employeeremove e,department d ,position p
+    where e.`afterDepId` = d.`id` and e.`afterJobId` = p.`id`) et left join employee e on et.eid = e.id
+    where e.name like concat('%',#{keywords},'%')
+    <if test="start!=null and size!=null">
+      order by et.id limit #{start},#{size}
+    </if>
+  </select>
+  <select id="selectByKey" resultMap="getAllResultMap">
+    select et.* from (select e.*,
+    d.`id` as did,d.`name` as dname ,
+    p.`id` as pid,p.`name` as pname
+    from employeeremove e,department d ,position p
+    where e.`afterDepId` = d.`id` and e.`afterJobId` = p.`id`) et left join employee e on et.eid = e.id
+    where e.name like concat('%',#{keywords},'%')
+    <if test="start!=null and size!=null">
+      order by et.id limit #{start},#{size}
+    </if>
+  </select>
+  <select id="getCountByKeywords" resultType="Long">
+    select  count(*) from employeeremove et left join employee e on et.eid = e.id
+    where e.name like concat('%',#{keywords},'%')
+  </select>
 </mapper>

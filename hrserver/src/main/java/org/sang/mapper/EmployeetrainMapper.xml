@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.sang.mapper.EmployeetrainMapper">
+  <resultMap id="BaseResultMap" type="org.sang.bean.Employeetrain">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="eid" jdbcType="INTEGER" property="eid" />
+    <result column="trainDate" jdbcType="DATE" property="trainDate" />
+    <result column="trainContent" jdbcType="VARCHAR" property="trainContent" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, eid, trainDate, trainContent, remark
+  </sql>
+  <select id="selectByExample" parameterType="org.sang.example.EmployeetrainExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from employeetrain
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from employeetrain
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from employeetrain
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="org.sang.example.EmployeetrainExample">
+    delete from employeetrain
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="org.sang.bean.Employeetrain">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into employeetrain (eid, trainDate, trainContent, 
+      remark)
+    values (#{eid,jdbcType=INTEGER}, #{trainDate,jdbcType=DATE}, #{trainContent,jdbcType=VARCHAR}, 
+      #{remark,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="org.sang.bean.Employeetrain">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into employeetrain
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="eid != null">
+        eid,
+      </if>
+      <if test="trainDate != null">
+        trainDate,
+      </if>
+      <if test="trainContent != null">
+        trainContent,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="eid != null">
+        #{eid,jdbcType=INTEGER},
+      </if>
+      <if test="trainDate != null">
+        #{trainDate,jdbcType=DATE},
+      </if>
+      <if test="trainContent != null">
+        #{trainContent,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="org.sang.example.EmployeetrainExample" resultType="java.lang.Long">
+    select count(*) from employeetrain
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update employeetrain
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.eid != null">
+        eid = #{record.eid,jdbcType=INTEGER},
+      </if>
+      <if test="record.trainDate != null">
+        trainDate = #{record.trainDate,jdbcType=DATE},
+      </if>
+      <if test="record.trainContent != null">
+        trainContent = #{record.trainContent,jdbcType=VARCHAR},
+      </if>
+      <if test="record.remark != null">
+        remark = #{record.remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update employeetrain
+    set id = #{record.id,jdbcType=INTEGER},
+      eid = #{record.eid,jdbcType=INTEGER},
+      trainDate = #{record.trainDate,jdbcType=DATE},
+      trainContent = #{record.trainContent,jdbcType=VARCHAR},
+      remark = #{record.remark,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="org.sang.bean.Employeetrain">
+    update employeetrain
+    <set>
+      <if test="eid != null">
+        eid = #{eid,jdbcType=INTEGER},
+      </if>
+      <if test="trainDate != null">
+        trainDate = #{trainDate,jdbcType=DATE},
+      </if>
+      <if test="trainContent != null">
+        trainContent = #{trainContent,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="org.sang.bean.Employeetrain">
+    update employeetrain
+    set eid = #{eid,jdbcType=INTEGER},
+      trainDate = #{trainDate,jdbcType=DATE},
+      trainContent = #{trainContent,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+
+  <delete id="deleteTrain">
+    DELETE FROM employeetrain WHERE id IN
+    <foreach collection="ids" separator="," item="id" open="(" close=")">
+      #{id}
+    </foreach>
+  </delete>
+
+  <select id="selectByKey" resultMap="BaseResultMap">
+    select et.* from employeetrain et left join employee e on et.eid = e.id
+    where e.name like concat('%',#{keywords},'%')
+    <if test="start!=null and size!=null">
+      order by et.id limit #{start},#{size}
+    </if>
+  </select>
+
+  <select id="getCountByKeywords" resultType="Long">
+    select  count(*) from employeetrain et left join employee e on et.eid = e.id
+    where e.name like concat('%',#{keywords},'%')
+
+  </select>
+</mapper>
